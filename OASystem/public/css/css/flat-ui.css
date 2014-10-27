@@ -568,6 +568,7 @@ a.bg-danger:hover {
 ul,
 ol {
   margin-bottom: 15px;
+  list-style-type: none;
   }
 dl {
   margin-bottom: 30px;
@@ -3923,7 +3924,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
 @media (min-width: 768px) {
   .navbar-header {
     float: left;
-    margin-top: 12px;
+    margin-top: 9px;
     }
   }
 .navbar-collapse {
@@ -4053,6 +4054,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   }
 .navbar-nav {
   margin: 0;
+  padding-top: 12px
   }
 .navbar-nav > li > a {
   padding: 15px 21px;

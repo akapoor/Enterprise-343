@@ -1,1 +1,18 @@
 <h3>Assigned Students</h3>
+<table ng-table class="table">
+    <tr ng-repeat="student in dbUsers">
+        <td data-title="'First Name'">{{student.fName}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Last Name'">{{student.lName}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Email'">{{student.email}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Major'">{{student.major}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Year Level'">{{student.yearLevel}}</td>
+    </tr>
+</table>

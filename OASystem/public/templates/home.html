@@ -1,8 +1,27 @@
-
-<div ng-controller="homeController">
-    <div id="container" ng-repeat ="item in options">
-        <button class="btn btn-hg btn-primary">
-            {{item}}
-        </button>
+    <div>
+        <p>Select an option below: </p>
     </div>
-</div>
+    <div  >
+        <ul id="homeList">
+            <li ng-repeat ="item in options">
+                <div ng-if="item == 'Events'">
+                    <button ng-click="redirect('/events')" class="btn btn-hg btn-primary">
+                        {{item}}
+                    </button>
+                </div> <br/>
+                <div ng-if="item == 'Assigned Students'">
+                    <button ng-click="redirect('/students')" class="btn btn-hg btn-primary">
+                        {{item}}
+                    </button>
+                </div> <br/>
+                <div ng-if="item == 'Information'">
+                    <button ng-click="redirect('/info')" class="btn btn-hg btn-primary">
+                        {{item}}
+                    </button>
+                </div> <br/>
+            </li>
+        </ul>
+
+    </div>
+
+

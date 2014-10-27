@@ -32,12 +32,14 @@ public class UserController {
 	}
 
 	@RequestMapping("/user")
-	public User getUser(
+	public User[] getUser(
 			@RequestParam(value = "email", required = true) String email)
 			throws Exception {
 
 		UserJDBCTemplate database = this.getJdbcCon();
-		return database.getUser(email);
+		User[] users = new User[1];
+		users[0] = database.getUser(email);
+		return users;
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)

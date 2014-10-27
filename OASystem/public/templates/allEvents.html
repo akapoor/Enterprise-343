@@ -1,1 +1,27 @@
 <h3> All Events </h3>
+<table ng-table class="table">
+    <tr ng-repeat="event in events">
+        <td data-title="'Event Name'">{{event.name}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Date'">{{event.date}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Start Time'">{{event.startTime}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'End Time'">{{event.endTime}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Location'">{{event.location}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'PALs On Duty'">{{event.onDutyPAL}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Description'">{{event.description}}</td>
+        <td></td>
+        <td></td>
+        <td data-title="'Attendees'">{{event.attendees}}</td>
+    </tr>
+</table>
