@@ -14,13 +14,15 @@ public interface User {
 	/**
 	 * This is the method to be used to create a record in the Student table.
 	 */
-	public void create(int personId, String userPassword, String userType, String fName, String lName, String email, int yearLevel, String major );
+	public boolean create(int personId, String userPassword, String userType,
+			String fName, String lName, String email, int yearLevel,
+			String major);
 
 	/**
 	 * This is the method to be used to list down a record from the Student
 	 * table corresponding to a passed student id.
 	 */
-	//INFO why are they using big Integer?
+	// INFO why are they using big Integer?
 	public objects.User getUser(String email);
 
 	/**
@@ -33,10 +35,10 @@ public interface User {
 	 * This is the method to be used to delete a record from the Student table
 	 * corresponding to a passed student id.
 	 */
-	public void delete(String email);
+	public boolean delete(String email);
 
 	/**
 	 * This is the method to be used to update a record into the Student table.
 	 */
-	//TODO thing above this comment
+	// TODO thing above this comment
 }

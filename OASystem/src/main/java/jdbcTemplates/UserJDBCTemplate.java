@@ -17,7 +17,7 @@ public class UserJDBCTemplate implements dao.User {
 		this.jdbcTemplateObject = new JdbcTemplate(this.dataSource);
 	}
 
-	public void create(int personId, String userPassword, String userType,
+	public boolean create(int personId, String userPassword, String userType,
 			String fName, String lName, String email, int yearLevel,
 			String major) {
 		String SQL = "insert into user (userPassword, userType, fName, lName, email, yearLevel, major) values (?,?,?,?,?,?,?)";
@@ -25,7 +25,7 @@ public class UserJDBCTemplate implements dao.User {
 		jdbcTemplateObject.update(SQL, userPassword, userType, fName, lName,
 				email, yearLevel, major);
 		System.out.println("Created Record Name = " + email);
-		return;
+		return true;
 	}
 
 	public objects.User getUser(Integer id) {
@@ -56,11 +56,11 @@ public class UserJDBCTemplate implements dao.User {
 		return user;
 	}
 
-	public void delete(String email) {
+	public boolean delete(String email) {
 		String SQL = "delete from user where email = ?";
 		jdbcTemplateObject.update(SQL, email);
 		System.out.println("Deleted Record with email = " + email);
-		return;
+		return true;
 
 	}
 	// public void update(Integer id, Integer age){
