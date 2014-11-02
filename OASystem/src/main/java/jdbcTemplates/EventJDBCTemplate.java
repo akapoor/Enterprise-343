@@ -64,7 +64,7 @@ public class EventJDBCTemplate implements EventDAO {
 	 * @see dao.EventDAO#delete(java.lang.String)
 	 */
 	public void delete(String eventName) {
-		String SQL = "delete from events where eName = ?";
+		String SQL = "delete from theEvents where eName = ?";
 		jdbcTemplateObject.update(SQL, eventName);
 		System.out.println("Deleted Record with eName = " + eventName);
 		return;
@@ -74,7 +74,7 @@ public class EventJDBCTemplate implements EventDAO {
 	 * @see dao.EventDAO#deleteEvent(java.lang.String, java.sql.Date)
 	 */
 	public void deleteEvent(String eventName, Date date){
-		String SQL = "delete from events where eName = ? and eDate = ?";
+		String SQL = "delete from theEvents where eName = ? and eDate = ?";
 		jdbcTemplateObject.update(SQL, eventName, date);
 		return;
 	}
@@ -86,7 +86,6 @@ public class EventJDBCTemplate implements EventDAO {
 		return event;
 	}
 	
-
 	public void delete(Integer id) {
 		String SQL = "delete from theEvents where eventId = ?";
 		jdbcTemplateObject.update(SQL, id);
@@ -96,42 +95,33 @@ public class EventJDBCTemplate implements EventDAO {
 
 	@Override
 	public Event getEvent(String eName, Date eDate) {
-		// TODO Auto-generated method stub
-		return null;
+		String SQL = "select * from theEvents where eName = ? and eDate = ?";
+		Event event = jdbcTemplateObject.queryForObject(SQL,
+				new Object[] { /*not sure if i need anything here*/}, new EventMapper());
+		return event;
 	}
 
 	@Override
 	public List<Event> getEvents(String eName) {
-		// TODO Auto-generated method stub
-		return null;
+		String SQL = "select * from theEvents where eName = ?";
+		List<Event> events = jdbcTemplateObject.query(SQL,
+				new EventMapper());
+		return events;
 	}
 
 	@Override
 	public List<Event> getEvents(Date eDate) {
-		// TODO Auto-generated method stub
-		return null;
+		String SQL = "select * from theEvents where eDate = ?";
+		List<Event> events = jdbcTemplateObject.query(SQL,
+				new EventMapper());
+		return events;
 	}
 
 	@Override
-	public List<Event> getAllEvents() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Event> getEvents(int year) {
+		String SQL = "select * from theEvents where YEAR(FROM_UNIXTIME(eDate)) = ?";
+		List<Event> events = jdbcTemplateObject.query(SQL,
+				new EventMapper());
+		return events;
 	}
-
-	@Override
-	public Event getEvents(int year) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-
-
-
-	
-	// public void update(Integer id, Integer age){
-	// String SQL = "update Student set age = ? where id = ?";
-	// jdbcTemplateObject.update(SQL, age, id);
-	// System.out.println("Updated Record with ID = " + id );
-	// return;
-	// }
 }

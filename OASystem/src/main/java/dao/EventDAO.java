@@ -61,9 +61,10 @@ public interface EventDAO {
 	
 	//public List<Event> getEvents(String email);
 	
-	public List<Event> getAllEvents();
+	public List<Event> getEvents(int year);
 	
-	public Event getEvents(int year);
+	public Event getEvent(Integer id);
+	public void delete(Integer id);
 	
 	
 }
