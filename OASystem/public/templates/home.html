@@ -1,27 +1,65 @@
     <div>
         <p>Select an option below: </p>
     </div>
-    <div  >
+    <div>
         <ul id="homeList">
-            <li ng-repeat ="item in options">
-                <div ng-if="item == 'Events'">
-                    <button ng-click="redirect('/events')" class="btn btn-hg btn-primary">
-                        {{item}}
-                    </button>
-                </div> <br/>
-                <div ng-if="item == 'Assigned Students'">
-                    <button ng-click="redirect('/students')" class="btn btn-hg btn-primary">
-                        {{item}}
-                    </button>
-                </div> <br/>
-                <div ng-if="item == 'Information'">
-                    <button ng-click="redirect('/info')" class="btn btn-hg btn-primary">
-                        {{item}}
-                    </button>
-                </div> <br/>
-            </li>
-        </ul>
+            <!-- Check for user types -->
+            <div ng-if='userType == "pal"'>
+                <li ng-repeat ="item in optionsPAL">
+                    <div ng-if="item == 'Events'">
+                        <button ng-click="redirect('/events')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                    <div ng-if="item == 'Assigned Students'">
+                        <button ng-click="redirect('/students')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                    <div ng-if="item == 'Information'">
+                        <button ng-click="redirect('/info')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                </li>
+            </div>
 
+            <div ng-if='userType == "student"'>
+                <li ng-repeat ="item in optionsStudent">
+                    <div ng-if="item == 'Events'">
+                        <button ng-click="redirect('/events')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                    <div ng-if="item == 'Information'">
+                        <button ng-click="redirect('/info')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                </li>
+            </div>
+
+            <div ng-if='userType == "admin"'>
+                <li ng-repeat ="item in optionsAdmin">
+                    <div ng-if="item == 'Events'">
+                        <button ng-click="redirect('/events')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                    <div ng-if="item == 'Assigned Students'">
+                        <button ng-click="redirect('/students')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                    <div ng-if="item == 'Information'">
+                        <button ng-click="redirect('/info')" class="btn btn-hg btn-primary">
+                            {{item}}
+                        </button>
+                    </div> <br/>
+                </li>
+            </div>
+
+        </ul>
     </div>
 
 

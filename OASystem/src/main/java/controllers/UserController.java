@@ -33,25 +33,26 @@ public class UserController {
 		return jdbcCon;
 	}
 
-	// TODO implement user/assinged, user/unassinged admin needed
-	// TODO user/create post
-
 	@RequestMapping("/user/assigned")
-	public User[] getAssignedUsers() {
+	public User[] getAssignedUsers(
+			@RequestParam(value = "email", required = true) String email) {
 		// check admin permissions
 		ArrayList<User> arr = new ArrayList<User>();
-		if (loginCon.isAdmin()) {
-			return null;
+		if (loginCon.isAdmin(email)) {
+			return jdbcCon.getAssign(true).toArray(
+					new User[jdbcCon.getAssign(true).size()]);
 		} else
 			return null;
 	}
 
 	@RequestMapping("/user/unassigned")
-	public User[] getUnassignedUsers() {
+	public User[] getUnassignedUsers(
+			@RequestParam(value = "email", required = true) String email) {
 		// check admin permissions
 		ArrayList<User> arr = new ArrayList<User>();
-		if (loginCon.isAdmin()) {
-			return null;
+		if (loginCon.isAdmin(email)) {
+			return jdbcCon.getAssign(false).toArray(
+					new User[jdbcCon.getAssign(false).size()]);
 		} else
 			return null;
 	}
@@ -81,19 +82,59 @@ public class UserController {
 		return this.getJdbcCon().delete(email);
 	}
 
-	//needs to handle batch processing now
-//	@RequestMapping(value = "/user/connect", method = RequestMethod.POST)
-//	public boolean connectStuds(
-//			@RequestParam(value = "email", required = true) String PalsEmail,
-//			@RequestBody @Valid final User[] users) {
-//		return this.jdbcCon.connectUsers(PalsEmail, Arrays.asList(users));
-//	}
-
-	@RequestMapping(value = "/user/connect", method = RequestMethod.DELETE)
-	public boolean unConnectStuds(
+	// TODO finish the caching of login controller to hold users and be able to
+	// reference them with all requests
+	// return array of boolean representing successs or not
+	@RequestMapping(value = "/user/connect", method = RequestMethod.POST)
+	public boolean[] connectStuds(
 			@RequestParam(value = "email", required = true) String PalsEmail,
 			@RequestBody @Valid final User[] users) {
-		return false;
+		if (loginCon.isAdmin(PalsEmail)) {
+			boolean[] ret = new boolean[users.length];
+			int index = 0;
+			// get cache of person logged in
+			User tempuser = loginCon.getCurUser(PalsEmail);
+			for (User u : users) {
+				try {
+					jdbcCon.createStudentConnection((u.getPersonId() + ""),
+							(tempuser.getPersonId() + ""));
+				} catch (Exception e) {
+					ret[index] = false;
+				}
+				ret[index] = true;
+				index++;
+			}
+			return ret;
+		} else {
+			return null;
+		}
+
+	}
+
+	// TODO finish the cacheing of user object in the loginController
+	@RequestMapping(value = "/user/connect", method = RequestMethod.DELETE)
+	public boolean[] unConnectStuds(
+			@RequestParam(value = "email", required = true) String PalsEmail,
+			@RequestBody @Valid final User[] users) {
+		if (loginCon.isAdmin(PalsEmail)) {
+			boolean[] ret = new boolean[users.length];
+			int index = 0;
+			// get cache of person logged in
+			User tempuser = loginCon.getCurUser(PalsEmail);
+			for (User u : users) {
+				try {
+					jdbcCon.deleteStudentConnection((u.getPersonId() + ""),
+							(tempuser.getPersonId() + ""));
+				} catch (Exception e) {
+					ret[index] = false;
+				}
+				ret[index] = true;
+				index++;
+			}
+			return ret;
+		} else {
+			return null;
+		}
 	}
 
 }

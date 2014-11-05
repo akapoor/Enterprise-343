@@ -2,18 +2,19 @@
  * Created by Anshul on 10/23/2014.
  */
 
+    //initialize the angular app
 var app = angular.module("orientationApp", ['ngRoute', 'ngTable']);
 
 //----------------------Create services----------------------
 // create a service to check if a user is logged in at a given time
 app.factory('SessionService', function(){
-	return {
-		status : false
-	};
+    return {
+        status : false
+    };
 });
 
 app.factory('SessionCache', function($cacheFactory){
-	return $cacheFactory('session');
+    return $cacheFactory('session');
 });
 
 //configure app routes
@@ -21,14 +22,14 @@ app.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
             when('/', {
-            	templateUrl: 'index.html',
-            	controller: 'indexController'
+                templateUrl: 'index.html',
+                controller: 'indexController'
             }).
             when('/login', {
-            	templateUrl: 'templates/userLogin.html',
-            	controller: 'loginController'
+                templateUrl: 'templates/userLogin.html',
+                controller: 'loginController'
             }).
-        	when('/home', {
+            when('/home', {
                 templateUrl: 'templates/home.html',
                 controller: 'homeController'
             }).
@@ -46,67 +47,73 @@ app.config(['$routeProvider',
             }).
             otherwise({
                 redirectTo: '/login'
-                	
+
             });
     }]);
 
 app.controller("indexController", function($scope, $location){
-		
-	$scope.loginStatus = localStorage.getItem('session');//SessionCache.get('session');
-/*	if($scope.Lstatus == "false"){
-		$location.path('/login');
-	}
-	if($scope.Lstatus == "true"){
-		$location.path('/home');
-	}
-	*/
+
+    $scope.loginStatus = localStorage.getItem('session');//SessionCache.get('session');
+    /*	if($scope.Lstatus == "false"){
+     $location.path('/login');
+     }
+     if($scope.Lstatus == "true"){
+     $location.path('/home');
+     }
+     */
 });
 
 app.controller("loginController", function($scope, $http, $location){
-	
-	$scope.response= "";
-	$scope.error="";
-	$scope.submit= function(){
-		var request={
-				email : $scope.userID,
-				password : $scope.passWORD
-		};
-		console.log(request);
-		$http.post('/login', request).
-        success(function(data, status, headers, config) {
-            $scope.response = data;
-            
-            if (typeof(Storage) != "undefined") {
-                localStorage.setItem('session', "false");
-                console.log("loginController: session == true")
-            } else {
-                console.log("Browser doesn't support local storage");
-            }
-            
-            if($scope.response == "true"){ //login credentials true
-            	//SessionService.status = true;
-            	localStorage.setItem('session', "true");
-            	console.log("loginController: session == true")
-            	$location.path('/home');
-            }
-            else{
-            	$scope.error = "Error: Invalid username or password. Try again.";
-            }
-        }).
-        error(function(data, status, headers, config) {
-            console.log("Error occurred in loggin in.");
-            console.log(data);
-        });
-	};
-		
+
+    $scope.response= "";
+    $scope.error="";
+    $scope.submit= function(){
+        var request={
+            email : $scope.userID,
+            password : $scope.passWORD
+        };
+        console.log(request);
+        $http.post('/login', request).
+            success(function(data, status, headers, config) {
+                $scope.response = data;
+
+                if (typeof(Storage) != "undefined") {
+                    localStorage.setItem('session', "false");
+                    console.log("loginController: session == true")
+                } else {
+                    console.log("Browser doesn't support local storage");
+                }
+
+                if($scope.response == "true"){ //login credentials true
+                    //SessionService.status = true;
+                    localStorage.setItem('session', "true");
+                    console.log("loginController: session == true");
+                    sessionStorage.setItem('userType', $scope.userID); //start keeping track of current logged user
+                    $location.path('/home');
+                }
+                else{
+                    $scope.error = "Error: Invalid username or password. Try again.";
+                }
+            }).
+            error(function(data, status, headers, config) {
+                console.log("Error occurred in loggin in.");
+                console.log(data);
+            });
+    };
+
 });
 
 app.controller("homeController", function($scope, $location){
-	console.log("homeController: session == " + localStorage.getItem('session'));
-    $scope.options = ["Events", "Assigned Students", "Information"];
+
+    sessionStorage.setItem('userType', "pal");
+    //console.log("homeController: session == " + localStorage.getItem('session'));
+    $scope.userType = sessionStorage.getItem('userType'); //get the type of user
+
+    $scope.optionsPAL = ["Events", "Assigned Students", "Information"];
+    $scope.optionsStudent = ["Events", "Information"];
+    $scope.optionsAdmin = ["Events", "Assigned Students", "Information"];
 
     $scope.redirect = function(path){
-        console.log("return val is"+path);
         $location.path( path );
     }
 
@@ -137,7 +144,7 @@ app.controller("studentsController", function($scope, $http){
             {name: "Linda", email: "linda@email.com", major: "Industrial Engineering",  level:"Graduate"},
             {name: "Marry", email: "marry@email.com", major: "Mechanical Engineering",  level:"Undergraduate, 3"},
             {name: "Miguel", email: "miguel@email.com", major: "Film and Animation",  level:"Undergraduate"},
-            {name: "Kat", email: "kat@email.com", major: "Software Engineering",  level:"Graduate"},
+            {name: "Kat", email: "kat@email.com", major: "Software Engineering",  level:"Graduate"}
         ];
 
     $scope.dbUsers = [];
@@ -145,10 +152,10 @@ app.controller("studentsController", function($scope, $http){
 
     $http.get('/user?email=abc@123.com').
         success(function(data, status, headers, config) {
-        	console.log("in success");
-        	console.log(data);
+            console.log("in success");
+            console.log(data);
             $scope.dbUsers = data;
-            
+
         }).
         error(function(data, status, headers, config) {
             console.log("Error occurred in getting users.");
@@ -160,4 +167,3 @@ app.controller("studentsController", function($scope, $http){
 app.controller("infoController", function($scope){
     $scope.options = ["File1", "File2", "File3"];
 });
-
