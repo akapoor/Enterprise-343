@@ -4,10 +4,31 @@
 
 var app = angular.module("orientationApp", ['ngRoute', 'ngTable']);
 
+//----------------------Create services----------------------
+// create a service to check if a user is logged in at a given time
+app.factory('SessionService', function(){
+	return {
+		status : false
+	};
+});
+
+app.factory('SessionCache', function($cacheFactory){
+	return $cacheFactory('session');
+});
+
+//configure app routes
 app.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/home', {
+            when('/', {
+            	templateUrl: 'index.html',
+            	controller: 'indexController'
+            }).
+            when('/login', {
+            	templateUrl: 'templates/userLogin.html',
+            	controller: 'loginController'
+            }).
+        	when('/home', {
                 templateUrl: 'templates/home.html',
                 controller: 'homeController'
             }).
@@ -24,11 +45,64 @@ app.config(['$routeProvider',
                 controller: 'infoController'
             }).
             otherwise({
-                redirectTo: '/home'
+                redirectTo: '/login'
+                	
             });
     }]);
 
+app.controller("indexController", function($scope, $location){
+		
+	$scope.loginStatus = localStorage.getItem('session');//SessionCache.get('session');
+/*	if($scope.Lstatus == "false"){
+		$location.path('/login');
+	}
+	if($scope.Lstatus == "true"){
+		$location.path('/home');
+	}
+	*/
+});
+
+app.controller("loginController", function($scope, $http, $location){
+	
+	$scope.response= "";
+	$scope.error="";
+	$scope.submit= function(){
+		var request={
+				email : $scope.userID,
+				password : $scope.passWORD
+		};
+		console.log(request);
+		$http.post('/login', request).
+        success(function(data, status, headers, config) {
+            $scope.response = data;
+            
+            if (typeof(Storage) != "undefined") {
+                localStorage.setItem('session', "false");
+                console.log("loginController: session == true")
+            } else {
+                console.log("Browser doesn't support local storage");
+            }
+            
+            if($scope.response == "true"){ //login credentials true
+            	//SessionService.status = true;
+            	localStorage.setItem('session', "true");
+            	console.log("loginController: session == true")
+            	$location.path('/home');
+            }
+            else{
+            	$scope.error = "Error: Invalid username or password. Try again.";
+            }
+        }).
+        error(function(data, status, headers, config) {
+            console.log("Error occurred in loggin in.");
+            console.log(data);
+        });
+	};
+		
+});
+
 app.controller("homeController", function($scope, $location){
+	console.log("homeController: session == " + localStorage.getItem('session'));
     $scope.options = ["Events", "Assigned Students", "Information"];
 
     $scope.redirect = function(path){

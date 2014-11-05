@@ -16,14 +16,15 @@
    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">-->
 </head>
 <body>
-    <h3>OrientationForce</h3>
+
+	<h3>OrientationForce</h3>
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
                 <img id="re-size" src="png/Retina-Ready.png" />
             </a>
         </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <div ng-if='loginStatus == "true"' class="collapse navbar-collapse" id="navbar-collapse-01">
             <ul class="nav navbar-nav">
                 <li><a href="#/home">Home</a></li>
             </ul>
@@ -31,5 +32,7 @@
     </nav>
     <div ng-view></div>
 
+    
+    
 </body>
 </html>
