@@ -46,17 +46,7 @@ public interface User {
 	 * @param assigned true means assigned, false means unassigned
 	 * @return
 	 */
-	public List<objects.User> getUser(boolean assigned);
-	
-	/** 7 This connects pals to students, the students are sent in all at once,
-	 * while there is only 1 individual pal each time this is called, searched
-	 * for by email
-	 * @param email
-	 * @param users
-	 * @return
-	 */
-	public boolean connectUsers(String email, List<objects.User> users);
-	
+	public List<objects.User> getAssign(boolean assigned);	
 	
 	/** 8 get user from id
 	 */
@@ -64,4 +54,8 @@ public interface User {
 	/** 9 delete user by id
 	 */
 	public void delete(Integer id);
+	
+	public void createStudentConnection(String userId, String palNum);
+	public void deleteStudentConnection(String userId, String palNum);
+	
 }

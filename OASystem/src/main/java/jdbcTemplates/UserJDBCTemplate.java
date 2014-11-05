@@ -7,8 +7,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import mappers.UserMapper;
+import objects.User;
 
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserJDBCTemplate implements dao.User {
@@ -84,39 +84,17 @@ public class UserJDBCTemplate implements dao.User {
 	 * 
 	 * @see dao.User#getUser(boolean)
 	 */
-	/*
-	 * WE STILL NEED TO DO THIS, NEED TO THINK THROUGH THIS LOGIC, NOT SURE WHAT
-	 * EXACTLY TO DO FOR THIS ONE
-	 */
-	public List<objects.User> getUser(boolean assigned) {
-		String SQL = "select * from user";
+	public List<objects.User> getAssign(boolean assigned) {
+		String SQL;
+		if (assigned){
+			SQL = "SELECT * FROM user INNER JOIN student ON user.personId = student.personId";
+		}
+		else{
+			SQL = "SELECT * FROM user LEFT JOIN student ON user.personId = student.personId WHERE student.personId is NULL UNION SELECT * FROM user RIGHT JOIN student ON user.personId = student.personId WHERE student.personId is NULL";
+		}
 		List<objects.User> users = jdbcTemplateObject.query(SQL,
 				new UserMapper());
 		return users;
-	}
-
-	/* 7
-	 * (non-Javadoc)
-	 * @see dao.User#connectUsers(java.lang.String, java.util.List)
-	 */
-	public boolean connectUsers(String email, List<objects.User> users) {
-		String SQL = "insert into student (personId, palNum) values (?, ?)";
-		  jdbcTemplateObject.batchUpdate(SQL, new BatchPreparedStatementSetter() {
-			  
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					objects.User user = users.get(i);
-					ps.setInt(1, user.getPersonId());
-					ps.setInt(2, getUser(email).getPersonId());
-				}
-			 
-				@Override
-				public int getBatchSize() {
-					return users.size();
-				}
-			  });
-		  
-		return true;
 	}
 
 	/* 8 (non-Javadoc)
@@ -139,4 +117,17 @@ public class UserJDBCTemplate implements dao.User {
 		return;
 	}
 
+	@Override
+	public void createStudentConnection(String userId, String palNum) {
+		// TODO Auto-generated method stub
+		String SQL = "insert into student (personId, palNum) values (?, ?)";
+		jdbcTemplateObject.update(SQL, userId, palNum);
+	}
+
+	@Override
+	public void deleteStudentConnection(String userId, String palNum) {
+		// TODO Auto-generated method stub
+		String SQL = "delete from student where personId=? AND palNum=?";
+		jdbcTemplateObject.update(SQL, userId, palNum);
+	}
 }
