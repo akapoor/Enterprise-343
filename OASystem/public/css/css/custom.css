@@ -14,7 +14,3 @@
 #homeList ul li {
     display: inline;
 }
-
-#loginError {
-	color: #ff0000;
-}

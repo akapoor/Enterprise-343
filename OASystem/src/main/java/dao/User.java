@@ -39,23 +39,30 @@ public interface User {
 	public boolean delete(String email);
 
 	/**
-	 * 6 If you are a PAL, then return all assigned students if assigned is true,
-	 * if admin, return all unassigned users if unassigned, if not pal or admin
-	 * the handling will be done by view
+	 * 6 If you are a PAL, then return all assigned students if assigned is
+	 * true, if admin, return all unassigned users if unassigned, if not pal or
+	 * admin the handling will be done by view
 	 * 
-	 * @param assigned true means assigned, false means unassigned
+	 * @param assigned
+	 *            true means assigned, false means unassigned
 	 * @return
 	 */
-	public List<objects.User> getAssign(boolean assigned);	
-	
-	/** 8 get user from id
+	public List<objects.User> getAssign(boolean assigned);
+
+	/**
+	 * 8 get user from id
 	 */
 	public objects.User getUser(Integer id);
-	/** 9 delete user by id
+
+	/**
+	 * 9 delete user by id
 	 */
 	public void delete(Integer id);
-	
+
 	public void createStudentConnection(String userId, String palNum);
+
 	public void deleteStudentConnection(String userId, String palNum);
-	
+
+	public List<objects.User> getPals();
+
 }

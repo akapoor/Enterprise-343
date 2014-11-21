@@ -3,6 +3,13 @@
  * Copyright 2013-2014 Designmodo, Inc.
  */
 
+
+li {
+    display: inline;
+}
+
+}
+
 @font-face {
   font-family: 'Lato';
   font-style: normal;

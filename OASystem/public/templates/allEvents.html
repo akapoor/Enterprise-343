@@ -1,4 +1,43 @@
-<h3> All Events </h3>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+            <img id="re-size" src="png/Retina-Ready.png" />
+        </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav">
+            <li><a href="#/home">Home</a></li>
+            <li ng-if='userType == "admin"'><a href="#/create">Create</a></li>
+            <li ng-if='userType == "admin"'><a href="#/manage">Manage</a></li>
+        </ul>
+    </div>
+</nav>
+
+<h3> Events </h3>
+
+    <div ng-if="userType == 'pal'">
+        <button class="btn btn-success" ng-click="myEvents('pal')" data-modal="loadMePAL">My Events</button>
+        <button class="btn btn-warning" ng-click="allEvents('pal')">All Events</button>
+    </div>
+    <div ng-if="userType == 'student'">
+        <button class="btn btn-success" ng-click="allEvents('student')" data-modal="loadMeStudent">My Events</button>
+    </div>
+    <div ng-if="userType == 'admin'">
+        <button class="btn btn-success" ng-click="myEvents('admin')" data-modal="loadMeAdmin">My Events</button>
+        <button class="btn btn-warning" ng-click="allEvents('admin')">All Events</button>
+    </div>
+
+
+<div>
+    <ul>
+        <li ng-repeat ="item in options">
+            <button class="btn btn-default btn-wide">
+                <span class="btn-tip">{{item}}</span>
+            </button>
+        </li>
+    </ul>
+</div>
+
 <table ng-table class="table">
     <tr ng-repeat="event in events">
         <td data-title="'Event Name'">{{event.name}}</td>

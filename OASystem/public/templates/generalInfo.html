@@ -1,2 +1,17 @@
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+            <img id="re-size" src="png/Retina-Ready.png" />
+        </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav">
+            <li><a href="#/home">Home</a></li>
+            <li ng-if='userType == "admin"'><a href="#/create">Create</a></li>
+            <li ng-if='userType == "admin"'><a href="#/manage">Manage</a></li>
+        </ul>
+    </div>
+</nav>
+
 <h3>General Information</h3>
         <p>Choose any following documents</p>

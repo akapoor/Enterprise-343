@@ -2,6 +2,7 @@ package controllers;
 
 import javax.sql.DataSource;
 
+import jdbcTemplates.EventJDBCTemplate;
 import jdbcTemplates.UserJDBCTemplate;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +61,13 @@ public class BeanConfig {
 	@Bean
 	public UserJDBCTemplate userJDBCTemplate() {
 		UserJDBCTemplate jd = new UserJDBCTemplate();
+		jd.setDataSource(dataSource());
+		return jd;
+	}
+
+	@Bean
+	public EventJDBCTemplate eventJDBCTemplate() {
+		EventJDBCTemplate jd = new EventJDBCTemplate();
 		jd.setDataSource(dataSource());
 		return jd;
 	}

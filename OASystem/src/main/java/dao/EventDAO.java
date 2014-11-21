@@ -66,5 +66,9 @@ public interface EventDAO {
 	public Event getEvent(Integer id);
 	public void delete(Integer id);
 	
+	public void createEventConnection(String palId, String EventId);
+	
+	public void deleteEventConnection(String palId, String EventId);
+	
 	
 }

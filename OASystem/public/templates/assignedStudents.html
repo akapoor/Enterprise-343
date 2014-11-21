@@ -1,10 +1,33 @@
-<h3>Assigned Students</h3>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+            <img id="re-size" src="png/Retina-Ready.png" />
+        </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav">
+            <li><a href="#/home">Home</a></li>
+            <li ng-show='userType == "admin"'><a href="#/create">Create</a></li>
+            <li ng-show='userType == "admin"'><a href="#/manage">Manage</a></li>
+        </ul>
+    </div>
+</nav>
+
+<h3>Students</h3>
+<div ng-if="userType == 'pal'">
+    <button class="btn btn-success" ng-click="myStudents('pal')" data-modal="loadMePAL">My Students</button>
+</div>
+<div ng-if="userType == 'admin'">
+    <button class="btn btn-success" ng-click="myStudents('admin')" data-modal="loadMeAdmin">All Students</button>
+    <button class="btn btn-warning" ng-click="myPALs('admin')">All PALs</button>
+</div>
+
 <table ng-table class="table">
     <tr ng-repeat="student in dbUsers">
-        <td data-title="'First Name'">{{student.fName}}</td>
+        <td data-title="'First Name'">{{student.fname}}</td>
         <td></td>
         <td></td>
-        <td data-title="'Last Name'">{{student.lName}}</td>
+        <td data-title="'Last Name'">{{student.lname}}</td>
         <td></td>
         <td></td>
         <td data-title="'Email'">{{student.email}}</td>
