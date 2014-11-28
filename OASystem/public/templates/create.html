@@ -1,0 +1,113 @@
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+            <img id="re-size" src="png/Retina-Ready.png" />
+        </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-01">
+        <ul class="nav navbar-nav">
+            <li><a href="#/home">Home</a></li>
+            <li ng-if='userType == "admin"'><a href="#/create">Create</a></li>
+            <li ng-if='userType == "admin"'><a href="#/manage">Manage</a></li>
+        </ul>
+    </div>
+</nav>
+
+<h3>Create</h3>
+
+<button class="btn btn-success" ng-click="createStudent()" data-modal="loadStudent">Student</button>
+<button class="btn btn-success" ng-click="createPAL()">PAL</button>
+<button class="btn btn-success" ng-click="createEvent()">Event</button>
+
+
+<form id="createForm1" ng-show="event == 'student'">
+    </br>
+    <p> Create a new student here</p>
+    <div>
+        <label>First Name: </label>
+        <input type="text" ng-model="fname"/>
+    </div>
+    <div>
+        <label>Last Name: </label>
+        <input type="text" ng-model="lname"/>
+    </div>
+    <div>
+        <label>Email: </label>
+        <input type="text" ng-model="emailID" />
+    </div>
+    <div>
+        <label>Major: </label>
+        <input type="text" ng-model="majorID" />
+    </div>
+    <div>
+        <label>Yeal Level: </label>
+        <input type="text" ng-model="level" />
+    </div>
+<!--     <div>
+        <label>Assign a PAL: </label>
+        <select id="selectPal" ng-model="first" ng-options="pal.name for pal in dbPAL"></select>
+    </div> -->
+    <button type=submit ng-click="submitStudent()">Create</button>
+</form>
+
+<form id="createForm2" ng-show="event == 'pal'">
+    </br>
+    <p> Create a new PAL here</p>
+    <div>
+        <label>First Name: </label>
+        <input type="text" ng-model="fname"/>
+    </div>
+    <div>
+        <label>Last Name: </label>
+        <input type="text" ng-model="lname"/>
+    </div>
+    <div>
+        <label>Email: </label>
+        <input type="text" ng-model="emailID" />
+    </div>
+    <div>
+        <label>Major: </label>
+        <input type="text" ng-model="majorID" />
+    </div>
+    <div>
+        <label>Yeal Level: </label>
+        <input type="text" ng-model="level" />
+    </div>
+    <button type=submit ng-click="submitPAL()">Create</button>
+</form>
+
+<form id="createForm3" ng-show="event == 'events'">
+    </br>
+    <p> Create a new event here</p>
+    <div>
+        <label>Location: </label>
+        <input type="text" ng-model="location"/>
+    </div>
+    <div>
+        <label>Event Name: </label>
+        <input type="text" ng-model="name"/>
+    </div>
+    <div>
+        <label>Date: </label>
+        <input type="text" ng-model="date" />
+    </div>
+    <div>
+        <label>Start Time: </label>
+        <input type="text" ng-model="start" />
+    </div>
+    <div>
+        <label>End Time: </label>
+        <input type="text" ng-model="end" />
+    </div>
+    <div>
+        <label>Description: </label>
+        <input type="text" ng-model="description" />
+    </div>
+    <div>
+        <label>Assign PALs: </label>
+        <div ng-repeat="pal in dbPAL">
+            <input type="checkbox" id="eventPal" ng-model="attendees" value="{{pal.name}}" ng-true-value="{{pal.name}}">{{pal.name}}</input>
+        </div>
+    </div>
+    <button type=submit ng-click="submitEvent()">Create</button>
+</form>
