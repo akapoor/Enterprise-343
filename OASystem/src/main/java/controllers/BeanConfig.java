@@ -3,6 +3,8 @@ package controllers;
 import javax.sql.DataSource;
 
 import jdbcTemplates.EventJDBCTemplate;
+import jdbcTemplates.GeneralInfoJDBCTemplate;
+import jdbcTemplates.QuestionJDBCTemplate;
 import jdbcTemplates.UserJDBCTemplate;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -71,4 +73,25 @@ public class BeanConfig {
 		jd.setDataSource(dataSource());
 		return jd;
 	}
+	
+	@Bean
+	public GeneralInfoJDBCTemplate generalInfoJDBCTemplate() {
+		GeneralInfoJDBCTemplate jd = new GeneralInfoJDBCTemplate();
+		jd.setDataSource(dataSource());
+		return jd;
+	}
+	
+	@Bean
+	public QuestionJDBCTemplate questionJDBCTemplate() {
+		QuestionJDBCTemplate jd = new QuestionJDBCTemplate();
+		jd.setDataSource(dataSource());
+		return jd;
+	}
+	
+//	@Bean
+//	public AnswerJDBCTemplate answerJDBCTemplate() {
+//		AnswerJDBCTemplate jd = new AnswerJDBCTemplate();
+//		jd.setDataSource(dataSource());
+//		return jd;
+//	}
 }
