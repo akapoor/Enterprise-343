@@ -28,7 +28,7 @@ public class GeneralInfoJDBCTemplate implements GeneralInfoDAO {
 
 	@Override
 	public GeneralInfo getMostRecent() {
-		String selectSQL = "SELECT * FROM generalinfo WHERE id = @last_id;";
+		String selectSQL = "SELECT * FROM generalinfo;";
 		List<GeneralInfo> ret = jdbcTemplateObject.query(selectSQL, new GeneralInfoMapper());
 		return ret.get(0);
 	}

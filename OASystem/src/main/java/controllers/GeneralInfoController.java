@@ -1,6 +1,12 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.validation.Valid;
 
@@ -48,9 +54,15 @@ public class GeneralInfoController {
 
 	// get a specific event. pass event name and date in url
 	@RequestMapping("/info")
-	public GeneralInfo[] getCurrent() {
-		GeneralInfo[] ret = new GeneralInfo[1];
-		ret[0] = this.jdbcCon.getMostRecent();
+	public File getCurrent() throws Exception {
+		GeneralInfo gi = this.jdbcCon.getMostRecent();
+		Blob blob = gi.getContent();
+		File ret = new File(gi.getFilename());
+		InputStream in = blob.getBinaryStream();
+		OutputStream out = new FileOutputStream(ret);
+		byte[] buff = blob.getBytes(1, (int) blob.length());
+		out.write(buff);
+		out.close();
 		return ret;
 	}
 
