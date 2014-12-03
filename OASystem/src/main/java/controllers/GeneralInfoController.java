@@ -5,7 +5,6 @@ import java.sql.Date;
 import javax.validation.Valid;
 
 import jdbcTemplates.GeneralInfoJDBCTemplate;
-import jdbcTemplates.QuestionJDBCTemplate;
 import jdbcTemplates.UserJDBCTemplate;
 import objects.GeneralInfo;
 
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import responseObjects.QuestionAnswer;
 
 @RestController
 public class GeneralInfoController {
@@ -51,17 +48,17 @@ public class GeneralInfoController {
 
 	// get a specific event. pass event name and date in url
 	@RequestMapping("/info")
-	public GeneralInfo[] getMostRecent() {
+	public GeneralInfo[] getCurrent() {
 		GeneralInfo[] ret = new GeneralInfo[1];
 		ret[0] = this.jdbcCon.getMostRecent();
 		return ret;
 	}
 
 	// get an event given an event name. pass name in url
-	@RequestMapping("/info")
-	public GeneralInfo[] getAllQuestions(
+	@RequestMapping("/info/specific")
+	public GeneralInfo[] getSpecificInfo(
 			@RequestParam(value = "fileName", required = true) String fileName,
-			@RequestParam(value = "fileName", required = true) Date date) {
+			@RequestParam(value = "date", required = true) Date date) {
 		GeneralInfo[] ret = new GeneralInfo[1];
 		ret[0] = this.jdbcCon.getFilename(fileName, date);
 		return ret;

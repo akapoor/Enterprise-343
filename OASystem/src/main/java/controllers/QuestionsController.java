@@ -89,7 +89,7 @@ public class QuestionsController {
 	}
 
 	// get an event given an event name. pass name in url
-	@RequestMapping("/questions")
+	@RequestMapping("/questions/all")
 	public QuestionAnswer[] getAllQuestions() {
 		ArrayList<QuestionAnswer> temp = new ArrayList<QuestionAnswer>();
 		for (Question q : (ArrayList<Question>) this.jdbcCon.getAllQuestions()) {
