@@ -7,7 +7,7 @@ public class Question {
 	private int personId;
 	private String qSubject;
 	private String qContent;
-	private Date postedDate;
+	private Date date;
 	
 	public int getqId() {
 		return qId;
@@ -34,9 +34,9 @@ public class Question {
 		this.qContent = qContent;
 	}
 	public Date getDate() {
-		return postedDate;
+		return date;
 	}
 	public void setDate(Date date) {
-		this.postedDate = date;
+		this.date = date;
 	}
 }

@@ -83,7 +83,7 @@ public class AnswerJDBCTemplate implements AnswerDAO {
 			preparedStatement.setString(3, answer.getqSubject());
 			preparedStatement.setString(4, answer.getqContent());
 			preparedStatement.setDate(5, answer.getDate());
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class AnswerJDBCTemplate implements AnswerDAO {
 			PreparedStatement preparedStatement = this.dataSource.getConnection()
 					.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, aId);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

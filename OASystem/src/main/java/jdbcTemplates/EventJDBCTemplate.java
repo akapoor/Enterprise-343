@@ -67,7 +67,7 @@ public class EventJDBCTemplate implements dao.EventDAO {
 			preparedStatement.setString(6, description);
 			preparedStatement.setString(7, attendees);
 			preparedStatement.setInt(8, epId);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,7 +130,7 @@ public class EventJDBCTemplate implements dao.EventDAO {
 			PreparedStatement preparedStatement = this.dataSource.getConnection()
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, eventName);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,7 +152,7 @@ public class EventJDBCTemplate implements dao.EventDAO {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, eventName);
 			preparedStatement.setDate(2, date);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,7 +192,7 @@ public class EventJDBCTemplate implements dao.EventDAO {
 			PreparedStatement preparedStatement = this.dataSource.getConnection()
 					.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, id);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -333,7 +333,7 @@ public class EventJDBCTemplate implements dao.EventDAO {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, personId);
 			preparedStatement.setString(2, eventId);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -350,7 +350,7 @@ public class EventJDBCTemplate implements dao.EventDAO {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, personId);
 			preparedStatement.setString(2, eventId);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

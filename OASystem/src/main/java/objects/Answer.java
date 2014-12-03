@@ -8,7 +8,7 @@ public class Answer {
 	private int personId;
 	private String aSubject;
 	private String aContent;
-	private Date postedDate;
+	private Date date;
 
 	public int getaId() {
 		return aId;
@@ -51,10 +51,10 @@ public class Answer {
 	}
 
 	public Date getDate() {
-		return postedDate;
+		return date;
 	}
 
 	public void setDate(Date date) {
-		this.postedDate = date;
+		this.date = date;
 	}
 }

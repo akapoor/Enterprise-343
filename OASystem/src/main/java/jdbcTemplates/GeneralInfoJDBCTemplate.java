@@ -65,7 +65,7 @@ public class GeneralInfoJDBCTemplate implements GeneralInfoDAO {
 			preparedStatement.setDate(2, genInfo.getDate());
 			preparedStatement.setBlob(3, genInfo.getContent());
 			preparedStatement.setString(4, genInfo.getFilename());
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,7 +80,7 @@ public class GeneralInfoJDBCTemplate implements GeneralInfoDAO {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, filename);
 			preparedStatement.setDate(2, createDate);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

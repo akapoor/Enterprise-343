@@ -14,3 +14,15 @@
 #homeList ul li {
     display: inline;
 }
+
+input[type=checkbox] {
+    -webkit-appearance: none;
+    width: 1em;
+    height: 1em;
+}
+input[type=checkbox]:after {
+    content: '▹';
+}
+input.open[type=checkbox]:after {
+    content: '▿';
+}

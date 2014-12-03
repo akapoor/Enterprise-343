@@ -14,4 +14,67 @@
 </nav>
 
 <h3>Forum</h3>
-        <p>Search </p>
+    <form id="createQ">
+        <div class="form-group has-error">
+            <button class="btn btn-danger" type=submit ng-click="createQuestion()">{{buttonName}}</button>
+            <input class="form-control input-sm" type="text" ng-show="q == true" type="text" placeholder="Ask a new question" id="newQuestion" size="100"/>
+        </div>
+        <div ng-show="q == true">
+                <select id="selectSubject" placeholder="Select Subject">
+                    <option>Assign Subject</option>
+                    <option>Immigration</option>
+                    <option>Housing</option>
+                    <option>Dinning</option>
+                    <option>Employment</option>
+                    <option>Health Services</option>
+                    <option>Sports & Recreational</option>
+                    <option>Other</option>
+                </select>
+            </label>
+        </div>
+    </form>
+
+    <form id="searchQ">
+        <div class="form-group has-error">
+            <button class="btn btn-info" type=submit ng-click="searchQuestion()">{{searchButtonName}}</button>
+        </div>
+        <!-- Type head search bar -->
+        <div id="the-basics" >
+            <input id="searchBar" class="typeahead"  ng-show="s == true" type="text" placeholder="Search question here..." size="100"/>
+        </div>
+    </form>
+    <h4>Currently Asked Questions</h4>
+
+
+<!-- Display All questions -->
+<div ng-if="currType != 'student'">
+    <div ng-repeat="item in allQAs">
+        <h6>
+            <input type=checkbox ng-model=collapse ng-class='{open:show}'>{{item.question.qContent}}</input>
+        </h6>
+
+        <div ng-show=collapse>{{item.answer.qContent}}</div>
+    </div>
+
+    <label>Answer Questions</label>
+    <!-- Answer a question -->
+    <form if="form1" >
+        <div>
+            <select id="answerMePlease">
+                <option ng-repeat="item in allQAs" value="{{item.qId}}">{{item.q}}</option>
+            </select>
+        </div>
+
+        <div>
+            <input class="form-control input-sm" type="text" type="text" placeholder="Answer me" id="inputAnswer" size="150"/>
+        </div>
+
+        <div>
+            <button class="btn btn-success" type=submit ng-click="createAnswer()">Add Answer</button>
+        </div>
+    </form>
+
+</div>
+
+
+

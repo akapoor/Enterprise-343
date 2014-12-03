@@ -71,8 +71,12 @@ public class QuestionsController {
 				for (Question q : unfltrd) {
 					// if wanted to filter results this would be the place to do
 					// it
-					for (Answer a : this.jdbcAns.getAllAnswers(q.getqId())) {
-						temp.add(new QuestionAnswer(q, a));
+					if (this.jdbcAns.getAllAnswers(q.getqId()).size() > 0) {
+						for (Answer a : this.jdbcAns.getAllAnswers(q.getqId())) {
+							temp.add(new QuestionAnswer(q, a));
+						}
+					} else {
+						temp.add(new QuestionAnswer(q, null));
 					}
 				}
 			}
@@ -93,8 +97,12 @@ public class QuestionsController {
 	public QuestionAnswer[] getAllQuestions() {
 		ArrayList<QuestionAnswer> temp = new ArrayList<QuestionAnswer>();
 		for (Question q : (ArrayList<Question>) this.jdbcCon.getAllQuestions()) {
-			for (Answer a : this.jdbcAns.getAllAnswers(q.getqId())) {
-				temp.add(new QuestionAnswer(q, a));
+			if (this.jdbcAns.getAllAnswers(q.getqId()).size() > 0) {
+				for (Answer a : this.jdbcAns.getAllAnswers(q.getqId())) {
+					temp.add(new QuestionAnswer(q, a));
+				}
+			} else {
+				temp.add(new QuestionAnswer(q, null));
 			}
 		}
 		return temp.toArray(new QuestionAnswer[temp.size()]);
@@ -122,8 +130,12 @@ public class QuestionsController {
 			@RequestParam(value = "name", required = true) String name) {
 		ArrayList<QuestionAnswer> temp = new ArrayList<QuestionAnswer>();
 		for (Question q : this.jdbcCon.searchQuestions(name)) {
-			for (Answer a : this.jdbcAns.getAllAnswers(q.getqId())) {
-				temp.add(new QuestionAnswer(q, a));
+			if (this.jdbcAns.getAllAnswers(q.getqId()).size() > 0) {
+				for (Answer a : this.jdbcAns.getAllAnswers(q.getqId())) {
+					temp.add(new QuestionAnswer(q, a));
+				}
+			} else {
+				temp.add(new QuestionAnswer(q, null));
 			}
 		}
 		return temp.toArray(new QuestionAnswer[temp.size()]);
@@ -131,9 +143,12 @@ public class QuestionsController {
 
 	// create a basic question.
 	@RequestMapping(value = "/questions", method = RequestMethod.POST)
-	public boolean createQuestion(@RequestBody @Valid final Question quest) {
+	public boolean createQuestion(
+			@RequestParam(value = "email", required = true) String email,
+			@RequestBody @Valid final Question quest) {
 		boolean ret = true;
 		try {
+			quest.setPersonId(this.jdbcUser.getUser(email).getPersonId());
 			getJdbcCon().createQuestion(quest);
 		} catch (Exception e) {
 			ret = false;

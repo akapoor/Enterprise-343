@@ -90,7 +90,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
 			preparedStatement.setString(2, question.getqSubject());
 			preparedStatement.setString(3, question.getqContent());
 			preparedStatement.setDate(4, question.getDate());
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +104,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
 			PreparedStatement preparedStatement = this.dataSource.getConnection()
 					.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, qId);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

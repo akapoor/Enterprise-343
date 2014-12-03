@@ -127,7 +127,7 @@ app.controller("loginController", function($scope, $http, $location){
 
 app.controller("homeController", function($scope, $location){
 	sessionStorage.setItem('userType', "admin");
-	sessionStorage.setItem('currEmail', "rnn7726@g.rt.edu");
+	sessionStorage.setItem('currEmail', "rnn7726@g.rit.edu");
 	 
     $scope.loginStatus = "true";
     $scope.userType = sessionStorage.getItem('userType');
@@ -406,21 +406,57 @@ app.controller("manageController", function($scope, $http){
 
     $("#loadPAL").click(); //loads the create student form
 
-    $scope.dbPAL = [{name:"Anshul"},{name:"Greg"}];
+    $scope.dbPAL = [{fName:"Anshul"},{fName:"Greg"}];
+    $scope.dbUnassignedStudents = [{fName:"Richard", lName: "N"},{fName:"Jhossue", lName: "H"}];
+    $scope.dbCurrentStudents = [{fName:"Bob", lName: "C"},{fName:"Henry", lName: "M"}];
 
-    /*
 
+    //*******************************Edit PAL************************************
      //get all the current pals at the load of this controller
-     $http.get("user/pal").
+     var palURL = "user/pal?loggedIn="+ sessionStorage.getItem('currEmail');
+     $http.get(palURL).
      success(function(data, status, headers, config) {
      $scope.dbPAL = data;
      }).
      error(function(data, status, headers, config) {
-     console.log("Error occurred in all PALs.");
+     console.log("Error occurred in getting all PALs.");
      console.log(data);
      });
 
-     */
+     //get a list of all unassigned students
+    var unassignedURL = "user/unassigned?loggedIn="+ sessionStorage.getItem('currEmail');
+    $http.get(unassignedURL).
+        success(function(data, status, headers, config) {
+            $scope.dbUnassignedStudents = data;
+        }).
+        error(function(data, status, headers, config) {
+            console.log("Error occurred in getting unassigned students.");
+            console.log(data);
+        });
+    //workflow: select a pal, selects students for that pal
+
+
+    //submit form to create a new PAL
+    $scope.editPALInfo = function(){
+        var connectRequest={
+            users : $scope.newAssignedStudents //error: unable to get selected users
+        }; //send the complete user object, not just the user name
+
+        //post method to assign new students to a pal
+        var palEmail = "pal@email.com";
+        var connectURL = "user/connect?email="+palEmail+"&loggedIn="+ sessionStorage.getItem('currEmail');
+        $http.post(connectURL, connectRequest).
+            success(function(data, status, headers, config) {
+            }).
+            error(function(data, status, headers, config) {
+                console.log("Error occurred in connecting unassigned students.");
+                console.log(data);
+            });
+        $("#editPALForm")[0].reset(); //reset form fields
+    }
+    //*****************************Edit Event*******************************************
+        //get all the events
+
     $scope.editPAL = function(){
         $scope.event = "editP";
     }
@@ -429,13 +465,185 @@ app.controller("manageController", function($scope, $http){
     }
 });
 
-app.controller("infoController", function($scope){
+app.controller("infoController", function($scope, $sce, $http){
 	$scope.userType = sessionStorage.getItem('userType');
     $scope.currEmail = sessionStorage.getItem('currEmail');
-    $scope.options = ["File1", "File2", "File3"];
+
+    $scope.length = 0;
+    $scope.files = []; //holds all the urls to files
+
+    //load all the blob file objects
+    $http.post('/info', {responseType: 'arraybuffer'})//QUESTION: what does this return? Blob or generalInfo object?
+        .success(function (data){
+            $scope.length = data.length;
+            for (i = 0; i < $scope.length; i++) {
+                var file = new Blob([data], {type: 'application/pdf'});
+                var fileURL = URL.createObjectURL(file);
+                $scope.files.push(fileURL);
+                //$scope.content = $sce.trustAsResourceUrl(fileURL); //make angularjs trust the url
+                //$scope.files.push($scope.content);
+            }
+        }).error(function(data){
+            console.log("Unable to download files");
+        });
+
+    $scope.openFile = function(fileURL){
+        window.open(fileURL); //open the pdf file in a new window
+    }
+
 });
 
-app.controller("questionController", function($scope){
-	$scope.userType = sessionStorage.getItem('userType');
+app.controller("questionController", function($scope, $http){
+
+    //***********************BEGIN TYPEHEAD****************************
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substrRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    // the typeahead jQuery plugin expects suggestions to a
+                    // JavaScript object, refer to typeahead docs for more info
+                    matches.push({ value: str });
+                }
+            });
+
+            cb(matches);
+        };
+    };
+    
+    var questions = [];
+
+    $('#the-basics .typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'questions',
+            displayKey: 'value',
+            source: substringMatcher(questions)
+    });
+
+    $scope.allQAs;
+    //get all question and answers
+    var url = "/questions/all"; 
+    $http.get(url).success(function (data){
+        $scope.allQAs = data;
+    }).error(function(data){
+        console.log("Unable to search question");
+    });
+
+    //*****************************END OF TYPEHEAD********************
+
+    $scope.userType = sessionStorage.getItem('userType');
     $scope.currEmail = sessionStorage.getItem('currEmail');
+    $scope.q = false;
+    $scope.s = false;
+    $scope.buttonName = "Ask";
+    $scope.searchButtonName = "Search";
+    $scope.subjects = ["Immigration", "Housing", "Dinning", "Health Services", "Sports & Recreational", "Campus Involvement", "Other"];
+    $scope.addAnswer = false;
+    
+    
+    var newQ = "";
+    var newAnswer = "";
+    var questionToBeAnsweredId = $("#answerMePlease").val(); //the question id
+
+
+    $scope.createAnswer = function(){
+        newAnswer = document.getElementById("inputAnswer").value;
+        console.log("answer is: " + newAnswer);
+        console.log("id is: " + questionToBeAnsweredId);
+
+        var req={
+            aId : 0,
+            qId : questionToBeAnsweredId,
+            personId: null, 
+            qSubject: null,
+            qContent: newAnswer,
+            postedDate: null
+        };
+        
+        var url = "questions/answer?email="+ sessionStorage.getItem('currEmail');
+        //post new answer to a question
+        $http.post(url, req).success(function (data){
+                //new answer posted
+        }).error(function(data){
+            console.log("Unable to create new answer");
+        });
+        $scope.addAnswer = false;
+    }
+
+    //Create a new question
+    $scope.createQuestion = function(){
+
+        if($scope.buttonName == "Ask"){
+            $scope.buttonName = "Submit Question";
+            $scope.q = true;
+
+        }
+        else{ //submit button is pressed, create a new question
+            $scope.buttonName = "Ask";
+            $scope.q = false;
+            newQ = document.getElementById("newQuestion").value;
+            console.log(newQ);
+            document.getElementById("newQuestion").value = "";
+            var subjectSelected = $('#selectSubject').find(":selected").text();
+
+            var req= {
+                qId : 0, //auto generated by mysql?
+                personId : null, 
+                qSubject : subjectSelected,
+                qContent : newQ,
+                date : null
+            };
+
+            var url = "/questions?email="+ sessionStorage.getItem('currEmail');
+            $http.post(url, req).success(function (data){
+
+            }).error(function(data){
+                console.log("Unable to create new question");
+            });
+        }
+    }
+
+    //Search questions
+    $scope.searchQuestion = function(){
+
+        if($scope.searchButtonName == "Search"){
+            $scope.searchButtonName = "See Answer";
+            $scope.s = true;
+
+        }
+        else{ //submit button is pressed, create a new question
+            $scope.searchButtonName = "Search";
+            $scope.s = false;
+
+            var searchQ = $("#searchBar").val(); //question to search
+
+            var req= {
+                qId : 0, //auto generated by mysql?
+                personId : $scope.currEmail,
+                qSubject : null,
+                qContent : searchQ,
+                date : null
+            };
+
+            var url = "/questions/search"; //loggedIn="+ sessionStorage.getItem('currEmail');
+            $http.post(url, req).success(function (data){
+            }).error(function(data){
+                console.log("Unable to search question");
+            });
+            //display result here
+        }
+    }
 });

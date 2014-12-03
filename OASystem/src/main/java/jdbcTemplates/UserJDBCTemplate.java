@@ -55,7 +55,7 @@ public class UserJDBCTemplate implements dao.User {
 				preparedStatement.setString(5, email);
 				preparedStatement.setInt(6, yearLevel);
 				preparedStatement.setString(7, major);
-				preparedStatement.executeQuery();
+				preparedStatement.executeUpdate();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -120,7 +120,7 @@ public class UserJDBCTemplate implements dao.User {
 			PreparedStatement preparedStatement = this.dataSource.getConnection()
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, email);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -190,7 +190,7 @@ public class UserJDBCTemplate implements dao.User {
 			PreparedStatement preparedStatement = this.dataSource.getConnection()
 					.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, id);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -207,7 +207,7 @@ public class UserJDBCTemplate implements dao.User {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, userId);
 			preparedStatement.setString(2, palNum);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,7 +224,7 @@ public class UserJDBCTemplate implements dao.User {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, userId);
 			preparedStatement.setString(2, palNum);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
