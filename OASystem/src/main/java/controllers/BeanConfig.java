@@ -2,6 +2,7 @@ package controllers;
 
 import javax.sql.DataSource;
 
+import jdbcTemplates.AnswerJDBCTemplate;
 import jdbcTemplates.EventJDBCTemplate;
 import jdbcTemplates.GeneralInfoJDBCTemplate;
 import jdbcTemplates.QuestionJDBCTemplate;
@@ -51,15 +52,6 @@ public class BeanConfig {
 		return dataSource;
 	}
 
-	// <!-- Definition for the specific jdbc bean -->
-	// <bean id="UserJDBCTemplate" class="jdbcTemplates.UserJDBCTemplate">
-	// <property name="dataSource" ref="dataSource" />
-	// </bean>
-	// <!-- Definition for the specific jdbc bean -->
-	// <bean id="EventJDBCTemplate" class="jdbcTemplates.EventJDBCTemplate">
-	// <property name="dataSource" ref="dataSource" />
-	// </bean>
-
 	@Bean
 	public UserJDBCTemplate userJDBCTemplate() {
 		UserJDBCTemplate jd = new UserJDBCTemplate();
@@ -88,10 +80,10 @@ public class BeanConfig {
 		return jd;
 	}
 	
-//	@Bean
-//	public AnswerJDBCTemplate answerJDBCTemplate() {
-//		AnswerJDBCTemplate jd = new AnswerJDBCTemplate();
-//		jd.setDataSource(dataSource());
-//		return jd;
-//	}
+	@Bean
+	public AnswerJDBCTemplate answerJDBCTemplate() {
+		AnswerJDBCTemplate jd = new AnswerJDBCTemplate();
+		jd.setDataSource(dataSource());
+		return jd;
+	}
 }
