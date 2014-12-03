@@ -6,43 +6,54 @@ public class Answer {
 	private int aId;
 	private int qId;
 	private int personId;
-	private String qSubject;
-	private String qContent;
+	private String aSubject;
+	private String aContent;
 	private Date postedDate;
-	
+
 	public int getaId() {
 		return aId;
 	}
+
 	public void setaId(int aId) {
 		this.aId = aId;
 	}
+
 	public int getqId() {
 		return qId;
 	}
+
 	public void setqId(int qId) {
 		this.qId = qId;
 	}
+
 	public int getPersonId() {
 		return personId;
 	}
+
 	public void setPersonId(int personId) {
 		this.personId = personId;
 	}
+
 	public String getqSubject() {
-		return qSubject;
+		return aSubject;
 	}
+
 	public void setqSubject(String qSubject) {
-		this.qSubject = qSubject;
+		this.aSubject = qSubject;
 	}
+
 	public String getqContent() {
-		return qContent;
+		return aContent;
 	}
+
 	public void setqContent(String qContent) {
-		this.qContent = qContent;
+		this.aContent = qContent;
 	}
+
 	public Date getDate() {
 		return postedDate;
 	}
+
 	public void setDate(Date date) {
 		this.postedDate = date;
 	}

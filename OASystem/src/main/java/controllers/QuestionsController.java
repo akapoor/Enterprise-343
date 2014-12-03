@@ -100,6 +100,22 @@ public class QuestionsController {
 		return temp.toArray(new QuestionAnswer[temp.size()]);
 	}
 
+	// get an event given an event name. pass name in url
+	@RequestMapping(value = "/questions/answer", method = RequestMethod.POST)
+	public boolean answerQuestion(@RequestBody @Valid final Answer answer,
+			@RequestParam(value = "email", required = true) String email) {
+		// look up user and set pId on answer object
+		boolean ret = true;
+		try {
+			User u = this.jdbcUser.getUser(email);
+			answer.setPersonId(u.getPersonId());
+			this.jdbcAns.createAnswer(answer);
+		} catch (Exception e) {
+			ret = false;
+		}
+		return ret;
+	}
+
 	// get event based on a specific date. pass date in url
 	@RequestMapping("/questions/search")
 	public QuestionAnswer[] searchQuestionName(
